@@ -1,9 +1,9 @@
 # VK_Education
 
 ## Описание
-Это репозиторий для проекта VK_Education/WebTechnologies, который содержит несколько HTML-файлов в папке `/WebTechnologies/AnswerHub/templates`.
+Это репозиторий для проекта по Технопарку - курс Web-технологии.
 
-## Ссылки на HTML-файлы
+## Ссылки на HTML-файлы для проверки ДЗ1
 
 - [questionsListing.html](https://kms-qwe.github.io/VK_Education/WebTechnologies/AnswerHub/templates/questionsListing.html)
 - [newQuestion.html](https://kms-qwe.github.io/VK_Education/WebTechnologies/AnswerHub/templates/newQuestion.html)
@@ -13,7 +13,3 @@
 - [logInPage.html](https://kms-qwe.github.io/VK_Education/WebTechnologies/AnswerHub/templates/logInPage.html)
 - [registration.html](https://kms-qwe.github.io/VK_Education/WebTechnologies/AnswerHub/templates/registration.html)
 
-## Установка
-1. Склонируйте репозиторий на свой компьютер (клонируется весь VK_Education со всеми курсами):
-   ```bash
-   git clone https://github.com/kmsq-qwe/VK_Education.git
