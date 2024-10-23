@@ -1,0 +1,4 @@
+AnswerHub/static/css/*
+AnswerHub/static/js/*
+!AnswerHub/static/css/bootstrap.min.css
+!AnswerHub/static/js/bootstrap.min.js

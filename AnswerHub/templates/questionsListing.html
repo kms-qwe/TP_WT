@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AnswerHub</title>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <div class="d-flex container-fluid justify-content-between gap-5">
+          <a class="navbar-brand" href="#">AnswerHub</a>
+
+          <form class="d-flex flex-grow-1" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+
+          <div class="d-flex gap-1">
+            <img src="#" alt="profile pucture" class="img-thumbnail" />
+            <div>
+              <div>Account Nick</div>
+              <div>
+                <a href="#">settings</a>
+                <a href="#">log out</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="d-flex gap-3">
+            <a href="#">log in</a>
+            <a href="#">register</a>
+          </div> -->
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="d-flex gap-3 align-items-center bg-light">
+        <h1>New Questions</h1>
+        <a href="#">Hot Questions </a>
+      </div>
+
+      <div class="row">
+        <div class="col-8">
+          <div class="d-flex flex-column">
+            <div class="container" style="max-width: 500">
+              <div class="d-flex w-100 flex-column gap-3">
+                <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-4 d-flex flex-column">
+                      <img
+                        src="#"
+                        class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1"
+                        alt="article image"
+                      />
+
+                      <div
+                        class="d-flex justify-content-center align-items-center gap-1"
+                      >
+                        <div
+                          class="border p-1"
+                          style="
+                            width: 20px;
+                            font-size: 1rem;
+                            text-align: center;
+                          "
+                        >
+                          <span id="likeCount">0</span>
+                        </div>
+
+                        <button id="upButton" class="btn btn-success btn-sm">
+                          +
+                        </button>
+                        <button id="downButton" class="btn btn-danger btn-sm">
+                          -
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="#">Card title</a></h5>
+                        <p class="card-text">
+                          This is a wider card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+
+                        <div class="d-flex gap-5">
+                          <a href="#" class="card-link">Answers</a>
+
+                          <div>
+                            Tags:
+                            <a href="#" class="card-link">tag1</a>
+                            <a href="#" class="card-link">tag2</a>
+                            <a href="#" class="card-link">tag3</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container" style="max-width: 500">
+              <div class="d-flex w-100 flex-column gap-3">
+                <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-4 d-flex flex-column">
+                      <img
+                        src="#"
+                        class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1"
+                        alt="article image"
+                      />
+
+                      <div
+                        class="d-flex justify-content-center align-items-center gap-1"
+                      >
+                        <div
+                          class="border p-1"
+                          style="
+                            width: 20px;
+                            font-size: 1rem;
+                            text-align: center;
+                          "
+                        >
+                          <span id="likeCount">0</span>
+                        </div>
+
+                        <button id="upButton" class="btn btn-success btn-sm">
+                          +
+                        </button>
+                        <button id="downButton" class="btn btn-danger btn-sm">
+                          -
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="#">Card title</a></h5>
+                        <p class="card-text">
+                          This is a wider card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+
+                        <div class="d-flex gap-5">
+                          <a href="#" class="card-link">Answers</a>
+
+                          <div>
+                            Tags:
+                            <a href="#" class="card-link">tag1</a>
+                            <a href="#" class="card-link">tag2</a>
+                            <a href="#" class="card-link">tag3</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container" style="max-width: 500">
+              <div class="d-flex w-100 flex-column gap-3">
+                <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-4 d-flex flex-column">
+                      <img
+                        src="#"
+                        class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1"
+                        alt="article image"
+                      />
+
+                      <div
+                        class="d-flex justify-content-center align-items-center gap-1"
+                      >
+                        <div
+                          class="border p-1"
+                          style="
+                            width: 20px;
+                            font-size: 1rem;
+                            text-align: center;
+                          "
+                        >
+                          <span id="likeCount">0</span>
+                        </div>
+
+                        <button id="upButton" class="btn btn-success btn-sm">
+                          +
+                        </button>
+                        <button id="downButton" class="btn btn-danger btn-sm">
+                          -
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="#">Card title</a></h5>
+                        <p class="card-text">
+                          This is a wider card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+
+                        <div class="d-flex gap-5">
+                          <a href="#" class="card-link">Answers</a>
+
+                          <div>
+                            Tags:
+                            <a href="#" class="card-link">tag1</a>
+                            <a href="#" class="card-link">tag2</a>
+                            <a href="#" class="card-link">tag3</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <section>
+            <h2>Popular tags</h2>
+
+            <div>
+              <div>
+                <a href="#" class="badge text-bg-primary">Primary</a>
+                <a href="#" class="badge text-bg-secondary">Secondary</a>
+                <a href="#" class="badge text-bg-success">Success</a>
+                <a href="#" class="badge text-bg-danger">Danger</a>
+                <a href="#" class="badge text-bg-warning">Warning</a>
+                <a href="#" class="badge text-bg-info">Info</a>
+                <a href="#" class="badge text-bg-light">Light</a>
+                <a href="#" class="badge text-bg-dark">Dark</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Best members</h2>
+            <div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script src="../static/js/bootstrap.min.js"></script>
+  </body>
+</html>
