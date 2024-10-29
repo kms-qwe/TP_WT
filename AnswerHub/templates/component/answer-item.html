@@ -1,0 +1,50 @@
+ 
+ {% load static %}
+ <div class="container" style="max-width: 500">
+    <div class="d-flex w-100 flex-column gap-3">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4 d-flex flex-column">
+            <img
+              src="{% static '/img/cat.png' %}"
+              class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
+              alt="article image"
+            />
+
+            <div class="d-flex justify-content-center align-items-center gap-1">
+                <div 
+                    class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
+                    style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;"
+                >
+                    <span id="likeCount">{{ answer.likecount }}</span>
+                </div>
+
+                <button id="upButton" class="btn btn-success btn-sm">+</button>
+                <button id="downButton" class="btn btn-danger btn-sm">-</button>
+            </div>
+            
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <p class="card-text">
+                {{ answer.content }}
+              </p>
+
+              <div class="container mt-3 gap-1">
+                <button class="btn btn-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="checkButton"
+                  />
+                  <label class="form-check-label" for="checkButton"
+                    >Correct!</label
+                  >
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,26 @@
+{% load static %}
+<div class="mb-3 text-left">
+    <label for="exampleFormControlInput1" class="form-label"
+    >Upload Avatar</label
+    ><br />
+
+    <div class="text-center">
+    <!-- Увеличенное изображение с фиксированными размерами -->
+    <img
+        src="{% static '/img/cat.png' %}"
+        class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
+        alt="profile pick"
+        style="width: 200px; height: 200px; object-fit: cover"
+    />
+    </div>
+
+    <div class="d-flex align-items-center mt-3">
+    <input
+        type="text"
+        class="form-control me-2"
+        id="exampleFormControlInput1"
+        placeholder="path/to/png"
+    />
+    <button type="button" class="btn btn-primary">Choose</button>
+    </div>
+</div>

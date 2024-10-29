@@ -1,3 +1,48 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block my-page-no-pic %}{% endblock %}
+
+{% block title-of-body%} 
+<h1>New Question</h1>
+{% endblock %}
+      
+
+{% block content %}
+
+<div class="d-flex flex-column">
+
+{% with type="text" name="Title" placeholder="your title" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
+
+{% with  name="Text" placeholder="Your answer here" %}
+{% include 'component/text-area-item.html' with input_name=name input_placeholder=placeholder %}
+{% endwith %}
+
+{% with type="text" name="Tags" placeholder="your tags" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
+
+Copy{% with name="Ask" link="home" %}
+    {% include 'component/button-item.html' with input_name=name input_link=link %}
+{% endwith %}
+
+</div>
+{% endblock %} 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

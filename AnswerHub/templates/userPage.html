@@ -1,156 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AnswerHub</title>
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="d-flex container-fluid justify-content-between gap-5">
-          <a class="navbar-brand" href="#">AnswerHub</a>
+{% extends 'layout/base.html' %}
+{% load static %}
 
-          <form class="d-flex flex-grow-1" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+{% block my-page-no-pic %}{% endblock %}
 
-          <div class="d-flex gap-1">
-            <img src="#" alt="profile pucture" class="img-thumbnail" />
-            <div>
-              <div>Account Nick</div>
-              <div>
-                <a href="#">settings</a>
-                <a href="#">log out</a>
-              </div>
-            </div>
-          </div>
+{% block title-of-body%} 
+<h1>Settings: Account Nick</h1>
+{% endblock %}
+      
 
-          <!-- <div class="d-flex gap-3">
-            <a href="#">log in</a>
-            <a href="#">register</a>
-          </div> -->
-        </div>
-      </div>
-    </nav>
+{% block content %}
+<div class="d-flex flex-column">
 
-    <main class="container">
-      <div class="d-flex gap-3 align-items-center bg-light">
-        <h1>Settings: Account Nick</h1>
-      </div>
+{% with type="text" name="Login" placeholder="your login" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
 
-      <div class="row">
-        <div class="col-8">
-          <div class="d-flex flex-column">
-            <div class="mb-3 text-">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Login</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="yourLogin"
-              />
-            </div>
+{% with type="text" name="Email" placeholder="email@gmail.com" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
 
-            <div class="mb-3 text-">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Email</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="yourEmail@gmail.com"
-              />
-            </div>
-            <div class="mb-3 text-">
-              <label for="exampleFormControlInput1" class="form-label"
-                >NickName</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="YourNick"
-              />
-            </div>
 
-            <div class="mb-3 text-left">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Upload Avatar</label
-              ><br />
 
-              <div class="text-center">
-                <!-- Увеличенное изображение с фиксированными размерами -->
-                <img
-                  src="#"
-                  class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1"
-                  alt="profile pick"
-                  style="width: 200px; height: 200px; object-fit: cover"
-                />
-              </div>
+{% with type="text" name="Nickname" placeholder="your nickname" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
 
-              <div class="d-flex align-items-center mt-3">
-                <input
-                  type="text"
-                  class="form-control me-2"
-                  id="exampleFormControlInput1"
-                  placeholder="path/to/png"
-                />
-                <button type="button" class="btn btn-primary">Выбрать</button>
-              </div>
-            </div>
+{% include 'component/png-input-item.html' %}
 
-            <div class="text-left">
-              <button type="button" class="btn btn-primary btn-sm">Save</button>
-            </div>
-          </div>
-        </div>
+{% with name="Save" link="home" %}
+    {% include 'component/button-item.html' with unput_name=name input_link=link %}
+{% endwith %}
 
-        <div class="col-4">
-          <section>
-            <h2>Popular tags</h2>
+</div>
+{% endblock %} 
 
-            <div>
-              <div>
-                <a href="#" class="badge text-bg-primary">Primary</a>
-                <a href="#" class="badge text-bg-secondary">Secondary</a>
-                <a href="#" class="badge text-bg-success">Success</a>
-                <a href="#" class="badge text-bg-danger">Danger</a>
-                <a href="#" class="badge text-bg-warning">Warning</a>
-                <a href="#" class="badge text-bg-info">Info</a>
-                <a href="#" class="badge text-bg-light">Light</a>
-                <a href="#" class="badge text-bg-dark">Dark</a>
-              </div>
-            </div>
-          </section>
 
-          <section>
-            <h2>Best members</h2>
-            <div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-    <script src="../static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+
+
+
