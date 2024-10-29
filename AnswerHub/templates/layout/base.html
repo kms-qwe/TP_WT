@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AnswerHub</title>
+    <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet" />
+    {% block add-style %} 
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <div class="d-flex container-fluid justify-content-between gap-5">
+          <a class="navbar-brand" href="{% url 'home' %}">AnswerHub</a>
+
+          <form class="d-flex flex-grow-1" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+
+          {% block my-page-pic %}
+          <div class="d-flex gap-1">
+            <img
+              src="{% static '/img/cat.png' %}"
+              alt="profile pucture"
+              class="img-thumbnail p-0"
+              style="width: 50; height: 50px"
+            />
+
+            <div>
+              <div>Account Nick</div>
+              <div>
+                <a href="{% url 'settings' %}">settings</a>
+                <a href="{% url 'home' %}">log out</a>
+              </div>
+            </div>
+          </div>
+          {% endblock %}
+          
+         {% block my-page-no-pic %}
+          <div class="d-flex gap-3">
+            <a href="{% url 'login' %}">log in</a>
+            <a href="{% url 'signup' %}">register</a>
+          </div>
+          {% endblock %}
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="d-flex gap-3 align-items-center bg-light">
+        {% block title-of-body %}
+            some title
+        {% endblock %}
+      </div>
+
+      <div class="row">
+        <div class="col-8">
+            {% block content %}
+            emppty layout
+            {% endblock %}</div>
+
+        <div class="col-4">
+          <section>
+            <h2>Popular tags</h2>
+
+            <div>
+              <div>
+                <a href="#" class="badge text-bg-primary">Primary</a>
+                <a href="#" class="badge text-bg-secondary">Secondary</a>
+                <a href="#" class="badge text-bg-success">Success</a>
+                <a href="#" class="badge text-bg-danger">Danger</a>
+                <a href="#" class="badge text-bg-warning">Warning</a>
+                <a href="#" class="badge text-bg-info">Info</a>
+                <a href="#" class="badge text-bg-light">Light</a>
+                <a href="#" class="badge text-bg-dark">Dark</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Best members</h2>
+            <div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+                <li class="list-group-item"><a href="#">Member1</a></li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

@@ -1,114 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AnswerHub</title>
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="d-flex container-fluid justify-content-between gap-5">
-          <a class="navbar-brand" href="#">AnswerHub</a>
+{% extends 'layout/base.html' %}
+{% load static %}
 
-          <form class="d-flex flex-grow-1" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+{% block my-page-pic %}{% endblock %}
 
-          <div class="d-flex gap-3">
-            <a href="#">log in</a>
-            <a href="#">register</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+{% block title-of-body%} 
+<h1>Log In</h1>
+<p style="color: red">Invalind login or password</p>
+{% endblock %}
+      
 
-    <main class="container">
-      <div class="d-flex flex-column gap-3 align-items-start bg-light">
-        <h1>Log In</h1>
-        <p style="color: red">Invalind login or password</p>
-      </div>
+{% block content %}
 
-      <div class="row">
-        <div class="col-8">
-          <div class="d-flex flex-column">
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Login</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="yourLogin"
-              />
-            </div>
+<div class="d-flex flex-column">
 
-            <form>
-              <div class="mb-3">
-                <label for="passwordInput" class="form-label">Пароль</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="passwordInput"
-                  placeholder="Введите пароль"
-                  required
-                />
-              </div>
-            </form>
+{% with type="text" name="Login" placeholder="your login" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
 
-            <div class="text-left">
-              <button type="button" class="btn btn-primary btn-sm">
-                Log In
-              </button>
-            </div>
+{% with type="password" name="Password" placeholder="your password" %}
+    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
+{% endwith %}
 
-            <a href="#" class="href">create new account</a>
-          </div>
-        </div>
 
-        <div class="col-4">
-          <section>
-            <h2>Popular tags</h2>
+{% with name="Log In" link="home" %}
+    {% include 'component/button-item.html' with unput_name=name input_link=link %}
+{% endwith %}
+</div>
 
-            <div>
-              <div>
-                <a href="#" class="badge text-bg-primary">Primary</a>
-                <a href="#" class="badge text-bg-secondary">Secondary</a>
-                <a href="#" class="badge text-bg-success">Success</a>
-                <a href="#" class="badge text-bg-danger">Danger</a>
-                <a href="#" class="badge text-bg-warning">Warning</a>
-                <a href="#" class="badge text-bg-info">Info</a>
-                <a href="#" class="badge text-bg-light">Light</a>
-                <a href="#" class="badge text-bg-dark">Dark</a>
-              </div>
-            </div>
-          </section>
 
-          <section>
-            <h2>Best members</h2>
-            <div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-    <script src="../static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% endblock %} 
+
+
+
+
+
+
+
+

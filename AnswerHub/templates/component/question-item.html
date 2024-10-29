@@ -1,0 +1,49 @@
+{% load static %}
+<div class="container" style="max-width: 500;">
+<div class="d-flex w-100 flex-column gap-3">
+    <div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4 d-flex flex-column">
+            <img
+                src="{% static '/img/cat.png' %}"
+                class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
+                alt="article image"
+            />
+
+            <div class="d-flex justify-content-center align-items-center gap-1">
+                <div 
+                    class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
+                    style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;"
+                >
+                    <span id="likeCount">{{ question.likecount }}</span>
+                </div>
+
+                <button id="upButton" class="btn btn-success btn-sm">+</button>
+                <button id="downButton" class="btn btn-danger btn-sm">-</button>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'question' question_id=question.id %}">{{ question.title }}</a></h5>
+            <p class="card-text">
+            {{ question.content }}
+            </p>
+
+            <div class="d-flex gap-5">
+            <a href="{% url 'question' question_id=question.id %}" class="card-link">Answers</a>
+
+            <div>
+                Tags:
+                <a href="{% url 'tag_questions' question.tags.0 %}" class="card-link">{{ question.tags.0 }} </a>
+                <a href="{% url 'tag_questions' question.tags.1 %}"class="card-link">{{ question.tags.1 }}</a>
+                <a href="{% url 'tag_questions' question.tags.2 %}" class="card-link">{{ question.tags.2 }}</a>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
