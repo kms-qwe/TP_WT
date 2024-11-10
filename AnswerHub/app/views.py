@@ -1,28 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-
-QUESTIONS = [
-    {
-        'id': i,
-        'title': f'Question {i}',
-        'tags':  ['no' * (i%2) + 'hub', 'tag2', 'tag3'],
-        'content': f'Content oxxxymiron is the smartest rapper {i}',
-        'answers': [
-            {
-                'content': f'answer {j}',
-                'likecount': f'{j*10}'
-            } for j in range(10)
-        ],
-        'likecount': f'{i}'
-    }   for i in range(200)
-]
-
+from django.utils import timezone
+from django.db.models import Count
+from .models import Question, Answer, Tag
 
 def paginate(objects_list, request, per_page=5):
     page_number = request.GET.get('page', 1)
-
     paginator = Paginator(objects_list, per_page)
 
     try:
@@ -34,35 +18,53 @@ def paginate(objects_list, request, per_page=5):
 
     return page_obj
 
+def add_tags_to_question(question):
+    question.tag_list = list(question.tags.all())
+    return question
 
-def home(request): 
-    page_obj = paginate(QUESTIONS, request) 
+def add_tags_to_questions(questions):
+    for question in questions:
+        question = add_tags_to_question(question)
+    return questions
+
+def home(request):
+    questions = Question.objects.filter_by_creation_time()
+
+    questions = add_tags_to_questions(questions)
+    
+    page_obj = paginate(questions, request)
     return render(request, 'questionsListing.html', {'questions': page_obj})
 
 
+
 def hot(request):
-    hot_questions = sorted(QUESTIONS, key=lambda x: x.get("id"), reverse=True)
-    page_obj = paginate(hot_questions, request) 
+    questions = Question.objects.filter_by_likes()
+    questions = add_tags_to_questions(questions)
+
+    page_obj = paginate(questions, request)
     return render(request, 'questionsListing.html', {'questions': page_obj})
 
 
 def tag(request, tag_name):
-    tag_questions = [q for q in QUESTIONS if tag_name in q.get("tags", [])]
-    if not tag_questions:  
-        raise Http404("No questions found for this tag.")
-    page_obj = paginate(tag_questions, request) 
+    questions = Question.objects.filter_by_tag(tag_name=tag_name).order_by('-created_at')  
+    questions = add_tags_to_questions(questions)
 
+    page_obj = paginate(questions, request)
     return render(request, 'tagQuestionsListing.html', {'questions': page_obj})
 
 
 def question(request, question_id):
-    question = QUESTIONS[question_id]
-    answers = question['answers']  
+    question = Question.objects.filter_by_id(question_id)
+    question = add_tags_to_question(question) 
+    answers = Answer.objects.for_question(question)
+    
     page_answers = paginate(answers, request)
+    
     return render(request, 'questionPage.html', {
         "question": question,
         "page_answers": page_answers 
     })
+
 
 
 

@@ -18,7 +18,7 @@
 
 {% block content %}
 <div class="d-flex flex-column">
-  {% include 'component/question-item.html'%}
+  {% include 'component/question-item.html' with question=question%}
 
   <hr class="custom-hr" />
   {% for answer in page_answers %} 
