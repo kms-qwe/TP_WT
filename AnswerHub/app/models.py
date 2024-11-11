@@ -28,15 +28,15 @@ class QuestionManager(models.Manager):
         elif end_time:
             queryset = queryset.filter(created_at__lte=end_time)
         
-        return queryset
+        return queryset.order_by('-created_at')
 
     def filter_by_likes(self):
         queryset = self.annotate(likeCount=Count('likes'))
-        return queryset.order_by('-likeCount')
+        return queryset.order_by('likeCount')
 
     
     def filter_by_tag(self, tag_name):
-        return self.filter(tags__tag_name=tag_name).annotate(likeCount=Count('likes')).distinct()
+        return self.filter(tags__tag_name=tag_name).annotate(likeCount=Count('likes')).distinct().order_by('-created_at')
 
 
     def filter_by_id(self, id):
@@ -61,7 +61,7 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField() # auto_now_add=True убран, чтобы протестить сортировку
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', through='TagQuestion')
     objects = QuestionManager() 

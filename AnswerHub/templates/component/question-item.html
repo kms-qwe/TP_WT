@@ -5,9 +5,15 @@
     <div class="row g-0">
         <div class="col-md-4 d-flex flex-column">
             <img
-                src="{% static '/img/cat.png' %}"
+
+                {% if question.author.profile.avatar %}
+                    src="{{ question.author.profile.avatar.url }}"
+                {% else %}
+                    src="{% static '/img/cat.png' %}" 
+                {% endif %}
+        
                 class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
-                alt="article image"
+                alt="Avatar"
             />
 
             <div class="d-flex justify-content-center align-items-center gap-1">
@@ -40,17 +46,9 @@
 
             <div>
                 Tags:
-                {% if question.tag_list|length > 0 %}
-                    <a href="{% url 'tag_questions' question.tag_list.0 %}" class="card-link">{{ question.tag_list.0 }}</a>
-                {% endif %}
-
-                {% if question.tag_list|length > 1 %}
-                    <a href="{% url 'tag_questions' question.tag_list.1 %}" class="card-link">{{ question.tag_list.1 }}</a>
-                {% endif %}
-
-                {% if question.tag_list|length > 2 %}
-                    <a href="{% url 'tag_questions' question.tag_list.2 %}" class="card-link">{{ question.tag_list.2 }}</a>
-                {% endif %}
+                {% for tag in question.tags.all %}
+                    <a href="{% url 'tag_questions' tag.tag_name %}" class="card-link">{{ tag.tag_name }}</a>
+                {% endfor %}
             </div>
             </div>
         </div>

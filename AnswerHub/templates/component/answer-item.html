@@ -6,7 +6,11 @@
         <div class="row g-0">
           <div class="col-md-4 d-flex flex-column">
             <img
-              src="{% static '/img/cat.png' %}"
+              {% if question.author.profile.avatar %}
+                  src="{{ anwer.author.profile.avatar.url }}"
+              {% else %}
+                  src="{% static '/img/cat.png' %}" 
+              {% endif %}
               class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
               alt="article image"
             />

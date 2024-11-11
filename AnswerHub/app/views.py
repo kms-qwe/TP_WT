@@ -18,20 +18,8 @@ def paginate(objects_list, request, per_page=5):
 
     return page_obj
 
-def add_tags_to_question(question):
-    question.tag_list = list(question.tags.all())
-    return question
-
-def add_tags_to_questions(questions):
-    for question in questions:
-        question = add_tags_to_question(question)
-    return questions
-
 def home(request):
     questions = Question.objects.filter_by_creation_time()
-
-    questions = add_tags_to_questions(questions)
-    
     page_obj = paginate(questions, request)
     return render(request, 'questionsListing.html', {'questions': page_obj})
 
@@ -39,23 +27,21 @@ def home(request):
 
 def hot(request):
     questions = Question.objects.filter_by_likes()
-    questions = add_tags_to_questions(questions)
-
     page_obj = paginate(questions, request)
     return render(request, 'questionsListing.html', {'questions': page_obj})
 
 
 def tag(request, tag_name):
     questions = Question.objects.filter_by_tag(tag_name=tag_name).order_by('-created_at')  
-    questions = add_tags_to_questions(questions)
-
     page_obj = paginate(questions, request)
-    return render(request, 'tagQuestionsListing.html', {'questions': page_obj})
+    return render(request, 'tagQuestionsListing.html', {
+        'questions': page_obj,
+        'tag_name': tag_name
+        })
 
 
 def question(request, question_id):
     question = Question.objects.filter_by_id(question_id)
-    question = add_tags_to_question(question) 
     answers = Answer.objects.for_question(question)
     
     page_answers = paginate(answers, request)
