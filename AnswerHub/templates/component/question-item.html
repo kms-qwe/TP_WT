@@ -5,9 +5,15 @@
     <div class="row g-0">
         <div class="col-md-4 d-flex flex-column">
             <img
-                src="{% static '/img/cat.png' %}"
+
+                {% if question.author.profile.avatar %}
+                    src="{{ question.author.profile.avatar.url }}"
+                {% else %}
+                    src="{% static '/img/cat.png' %}" 
+                {% endif %}
+        
                 class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
-                alt="article image"
+                alt="Avatar"
             />
 
             <div class="d-flex justify-content-center align-items-center gap-1">
@@ -15,7 +21,7 @@
                     class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
                     style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;"
                 >
-                    <span id="likeCount">{{ question.likecount }}</span>
+                    <span id="likeCount">{{ question.likeCount }}</span>
                 </div>
 
                 <button id="upButton" class="btn btn-success btn-sm">+</button>
@@ -27,18 +33,22 @@
         <div class="col-md-8">
         <div class="card-body">
             <h5 class="card-title"><a href="{% url 'question' question_id=question.id %}">{{ question.title }}</a></h5>
+            
             <p class="card-text">
-            {{ question.content }}
+                {{ question.text|slice:":500" }}{% if question.text|length > 500 %}...{% endif %}
             </p>
+            
+
+            <small class="text-muted">{{ question.created_at }}</small>
 
             <div class="d-flex gap-5">
             <a href="{% url 'question' question_id=question.id %}" class="card-link">Answers</a>
 
             <div>
                 Tags:
-                <a href="{% url 'tag_questions' question.tags.0 %}" class="card-link">{{ question.tags.0 }} </a>
-                <a href="{% url 'tag_questions' question.tags.1 %}"class="card-link">{{ question.tags.1 }}</a>
-                <a href="{% url 'tag_questions' question.tags.2 %}" class="card-link">{{ question.tags.2 }}</a>
+                {% for tag in question.tags.all %}
+                    <a href="{% url 'tag_questions' tag.tag_name %}" class="card-link">{{ tag.tag_name }}</a>
+                {% endfor %}
             </div>
             </div>
         </div>

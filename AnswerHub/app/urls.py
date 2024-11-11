@@ -20,3 +20,4 @@ urlpatterns = [
    path('settings/', views.settings, name='settings')
 
 ]
+
