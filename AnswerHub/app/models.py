@@ -61,7 +61,7 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
-    created_at = models.DateTimeField() # auto_now_add=True убран, чтобы протестить сортировку
+    created_at = models.DateTimeField(auto_now_add=True) # auto_now_add=True убран, чтобы протестить сортировку
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', through='TagQuestion')
     objects = QuestionManager() 
@@ -88,6 +88,13 @@ class Tag(models.Model):
     def __str__(self):
         return self.tag_name
 
+    @classmethod
+    def get_or_create(cls, tag_name):
+        tag = cls.objects.filter(tag_name=tag_name).first()
+        if tag:
+            return tag, False 
+        tag = cls.objects.create(tag_name=tag_name)
+        return tag, True 
 
 class TagQuestion(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

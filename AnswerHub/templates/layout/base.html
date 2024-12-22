@@ -13,8 +13,9 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <div class="d-flex container-fluid justify-content-between gap-5">
+          
           <a class="navbar-brand" href="{% url 'home' %}">AnswerHub</a>
-
+          <a class="navbar-brand" href="{% url 'new_question' %}">Ask</a>
           <form class="d-flex flex-grow-1" role="search">
             <input
               class="form-control me-2"
@@ -27,37 +28,35 @@
             </button>
           </form>
 
-          {% block my-page-pic %}
-          <div class="d-flex gap-1">
-            <img
-              src="{% static '/img/cat.png' %}"
-              alt="profile pucture"
-              class="img-thumbnail p-0"
-              style="width: 50; height: 50px"
-            />
+          {% if request.user.is_authenticated %}
+            <div class="d-flex gap-1">
+              <img
+                src="{% static '/img/cat.png' %}"
+                alt="profile pucture"
+                class="img-thumbnail p-0"
+                style="width: 50; height: 50px"
+              />
 
-            <div>
-              <div>Account Nick</div>
               <div>
-                <a href="{% url 'settings' %}">settings</a>
-                <a href="{% url 'home' %}">log out</a>
+                <div>{{ user.username }}</div>
+                <div>
+                  <a href="{% url 'profile.edit' %}">profile</a>
+                  <a href="{% url 'logout' %}">log out</a>
+                </div>
               </div>
             </div>
-          </div>
-          {% endblock %}
-          
-         {% block my-page-no-pic %}
-          <div class="d-flex gap-3">
-            <a href="{% url 'login' %}">log in</a>
-            <a href="{% url 'signup' %}">register</a>
-          </div>
-          {% endblock %}
+          {% else %}
+            <div class="d-flex gap-3">
+              <a href="{% url 'login' %}">log in</a>
+              <a href="{% url 'signup' %}">sign up</a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </nav>
 
     <main class="container">
-      <div class="d-flex gap-3 align-items-center bg-light">
+      <div class="d-flex gap-3 align-items-center">
         {% block title-of-body %}
             some title
         {% endblock %}

@@ -1,36 +1,23 @@
 {% extends 'layout/base.html' %}
 {% load static %}
+{% load bootstrap5 %}
 
-{% block my-page-no-pic %}{% endblock %}
 
 {% block title-of-body%} 
-<h1>Settings: Account Nick</h1>
+<h1>{{user.username}}</h1>
 {% endblock %}
       
 
 {% block content %}
 <div class="d-flex flex-column">
+    <form action="{% url 'profile.edit' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
 
-{% with type="text" name="Login" placeholder="your login" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-{% with type="text" name="Email" placeholder="email@gmail.com" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-
-
-{% with type="text" name="Nickname" placeholder="your nickname" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-{% include 'component/png-input-item.html' %}
-
-{% with name="Save" link="home" %}
-    {% include 'component/button-item.html' with unput_name=name input_link=link %}
-{% endwith %}
-
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Edit</button>
+        {% endbuttons %}
+    </form>
 </div>
 {% endblock %} 
 

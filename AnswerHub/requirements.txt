@@ -1,9 +1,12 @@
 asgiref==3.8.1
-Django==5.1.2
+beautifulsoup4==4.12.3
+Django==4.2.17
+django-bootstrap-v5==1.0.11
 Faker==30.8.2
 pillow==11.0.0
 psycopg2-binary==2.9.10
 python-dateutil==2.9.0.post0
 six==1.16.0
+soupsieve==2.6
 sqlparse==0.5.1
 typing_extensions==4.12.2

@@ -11,13 +11,13 @@ urlpatterns = [
     # Работа с вопросами
     path('question/<int:question_id>/', views.question, name='question'),
     path('ask/', views.ask, name='new_question'),
-    
     # Аутентификация
     path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('signup/', views.signup, name='signup'),
    
    # Settings
-   path('settings/', views.settings, name='settings')
+   path('profile/edit', views.profile_edit, name='profile.edit')
 
 ]
 
