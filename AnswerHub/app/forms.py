@@ -34,8 +34,14 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
 
+
             avatar = self.cleaned_data.get('avatar')
-            Profile.objects.create(user=user, avatar=avatar)
+            print("DEBUG: avatar from cleaned_data ->", avatar)
+            
+            if avatar:
+                Profile.objects.create(user=user, avatar=avatar)
+            else:
+                Profile.objects.create(user=user)  
 
         return user
 

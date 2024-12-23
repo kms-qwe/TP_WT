@@ -7,14 +7,14 @@
           <div class="col-md-4 d-flex flex-column">
             <img
               {% if question.author.profile.avatar %}
-                  src="{{ anwer.author.profile.avatar.url }}"
+                  src="{{ answer.author.profile.avatar.url }}"
               {% else %}
                   src="{% static '/img/cat.png' %}" 
               {% endif %}
               class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
               alt="article image"
             />
-
+            //TODO:фотки не у каждого в ответах отобржаются. АЯКСЫ.
             <div class="d-flex justify-content-center align-items-center gap-1">
                 <div 
                     class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"

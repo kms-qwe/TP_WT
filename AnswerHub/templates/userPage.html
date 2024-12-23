@@ -10,9 +10,19 @@
 
 {% block content %}
 <div class="d-flex flex-column">
-    <form action="{% url 'profile.edit' %}" method="POST">
+    <form action="{% url 'profile.edit' %}" method="POST", enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form %}
+
+        {% if user.profile.avatar %}
+            <div class="d-flex justify-content-center mb-4">
+                <div class="p-3" style="width: 300px;">
+                    <img src="{{ user.profile.avatar.url }}" alt="Profile Avatar" class="img-fluid rounded">
+                </div>
+            </div>
+        {% endif %}
+
+
 
         {% buttons %}
             <button type="submit" class="btn btn-primary">Edit</button>

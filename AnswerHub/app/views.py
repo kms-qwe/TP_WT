@@ -43,7 +43,7 @@ def tag(request, tag_name):
         'questions': page_obj,
         'tag_name': tag_name
         })
-
+ 
 def question(request, question_id):
     question = Question.objects.filter_by_id(question_id)
     answers = Answer.objects.for_question(question)
