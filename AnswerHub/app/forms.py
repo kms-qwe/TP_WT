@@ -6,6 +6,7 @@ from .models import Profile, Question, Tag, TagQuestion, Answer
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+    next = forms.CharField(widget=forms.HiddenInput(), required=False)  
 
     def clean_username(self):
         return self.cleaned_data['username'].rstrip()
@@ -94,6 +95,9 @@ class QuestionForm(forms.ModelForm):
         if not (1 <= len(tags_list) <= 3):
             raise ValidationError("Должно быть от 1 до 3 тегов.")
         
+        for tag in tags_list: 
+            if len(tag) > 20:
+                raise ValidationError("Тег должен быть до 20 символов")
         return tags_list
 
     def clean(self):

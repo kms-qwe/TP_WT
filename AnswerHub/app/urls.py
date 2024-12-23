@@ -15,7 +15,11 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('signup/', views.signup, name='signup'),
-   
+    path('like/question/', views.like_question, name='like.question'),
+    path('like/answer/', views.like_answer, name='like.answer'),
+    path('answer/update/', views.update_answer, name='answer.update'),
+
+
    # Settings
    path('profile/edit', views.profile_edit, name='profile.edit')
 

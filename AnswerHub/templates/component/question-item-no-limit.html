@@ -31,6 +31,7 @@
                     data-id="{{ question.id }}"
                 >&#128077;</button>
             </div>
+            
 
         </div>
 
@@ -39,7 +40,7 @@
             <h5 class="card-title"><a href="{% url 'question' question_id=question.id %}">{{ question.title }}</a></h5>
             
             <p class="card-text">
-                {{ question.text|slice:":500" }}{% if question.text|length > 500 %}...{% endif %}
+                {{ question.text }}
             </p>
             
 

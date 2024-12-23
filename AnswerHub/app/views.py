@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 from django.db.models import Count
-from .models import Question, Answer, Tag
+from .models import Question, Answer, Tag, QuestionLike, AnswerLike
 from .forms import LoginForm, UserRegistrationForm, QuestionForm, AnswerForm, UserProfileEditForm
 from django.urls import reverse
 from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from urllib.parse import urlparse
+
 
 def paginate(objects_list, request, per_page=5):
     page_number = request.GET.get('page', 1)
@@ -58,29 +60,48 @@ def question(request, question_id):
             answer.author_id = request.user.id
             answer.question_id = question.id
             answer.save()
-            return redirect('question', question_id=question.id)
-            
+
+            answer_index = list(answers).index(answer) + 1
+            page = (answer_index - 1) // page_answers.paginator.per_page + 1
+
+            return redirect(f"{request.path}?page={page}#answer-{answer.id}")
+
+    is_author = request.user == question.author
+
     return render(request, 'questionPage.html', {
         'form': form,
         "question": question,
-        "page_answers": page_answers 
+        "page_answers": page_answers,
+        'is_author': is_author
     })
 
 
 
 
 def login(request):
-    form = LoginForm
+    form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             user = auth.authenticate(request, **form.cleaned_data)
             if user:
                 auth.login(request, user)
+
+                redirect_url = form.cleaned_data.get('next')
+
+                if redirect_url:
+                    parsed_url = urlparse(redirect_url)
+                    if parsed_url.netloc in ('', 'localhost'):  
+                        return redirect(redirect_url)
+
                 return redirect(reverse('profile.edit'))
             form.add_error('password', 'Invalid username or password.')
 
+    if 'next' in request.GET:
+        form.fields['next'].initial = request.GET['next']
+
     return render(request, 'logInPage.html', {'form': form})
+
 
 @login_required
 def logout(request):
@@ -128,4 +149,42 @@ def profile_edit(request):
     
     return render(request, 'userPage.html', {'form': form})
 
+@login_required
+def like_question(request):
+    id = request.POST.get('question_id')
+    question = get_object_or_404(Question, pk=id)
+    QuestionLike.objects.toggle_like(user=request.user, question=question)  
+    count = question.get_likes_count()
 
+    return JsonResponse({
+        'count': count
+    })
+
+
+@login_required
+def like_answer(request):
+    id = request.POST.get('answer_id')
+    answer = get_object_or_404(Answer, pk=id)
+    AnswerLike.objects.toggle_like(user=request.user, answer=answer)
+    count = answer.get_likes_count()
+
+    return JsonResponse({
+        'count': count
+    })
+
+@login_required
+def update_answer(request):
+    if request.method == 'POST':
+        answer_id = request.POST.get('answer_id')
+        is_correct = request.POST.get('is_correct') == 'true'
+        
+        try:
+            answer = Answer.objects.get(id=answer_id)
+            if request.user == answer.question.author:
+                answer.is_correct = is_correct
+                answer.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': 'Not the author'})
+        except Answer.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Answer not found'})

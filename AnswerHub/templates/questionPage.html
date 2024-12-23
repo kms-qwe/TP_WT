@@ -18,7 +18,7 @@
 
 {% block content %}
 <div class="d-flex flex-column">
-  {% include 'component/question-item.html' with question=question%}
+  {% include 'component/question-item-no-limit.html' with question=question%}
 
   <hr class="custom-hr" />
   {% for answer in page_answers %} 
@@ -37,9 +37,9 @@
     {% buttons %}
         <button type="submit" class="btn btn-primary">Answer</button>
     {% endbuttons %}
-</form>
+ </form>
   {% else %}
-   <p>Для того чтобы ответить, вам нужно <a href="{% url 'login' %}">войти</a>.</p>
+   <p>Для того чтобы ответить, вам нужно <a href="{% url 'login' %}?next={{ request.get_full_path }}">войти</a>.</p>
   {% endif %}
 
 </div>

@@ -68,6 +68,9 @@ class Question(models.Model):
     def __str__(self):
         return self.title
 
+    def get_likes_count(self):
+        return self.likes.count()
+
 
 class Answer(models.Model):
     text = models.TextField()
@@ -80,6 +83,9 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"Answer by {self.author.username}"
+    
+    def get_likes_count(self):
+        return self.likes.count()
 
 
 class Tag(models.Model):
@@ -104,17 +110,45 @@ class TagQuestion(models.Model):
         unique_together = ('tag', 'question')
 
 
+class QuestionLikeManager(models.Manager):
+    def toggle_like(self, user, question):
+        like = self.filter(user=user, question=question).first()
+        if like:
+            like.delete()  
+            return False 
+        else:
+            self.create(user=user, question=question)  
+            return True  
+
+
 class QuestionLike(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='question_likes')
 
+    objects = QuestionLikeManager()
+
     class Meta:
         unique_together = ('question', 'user')
+
+
+
+class AnswerLikeManager(models.Manager):
+    def toggle_like(self, user, answer):
+        like = self.filter(user=user, answer=answer).first()
+        if like:
+            like.delete()  
+            return False 
+        else:
+            self.create(user=user, answer=answer)  
+            return True  
 
 
 class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answer_likes')
 
+    objects = AnswerLikeManager()
+
     class Meta:
         unique_together = ('answer', 'user')
+
