@@ -1,16 +1,83 @@
+import jwt
+import time
+from cent import Client, PublishRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 from django.db.models import Count
-from .models import Question, Answer, Tag, QuestionLike, AnswerLike
+from .models import Question, Answer, Tag, QuestionLike, AnswerLike, User
 from .forms import LoginForm, UserRegistrationForm, QuestionForm, AnswerForm, UserProfileEditForm
 from django.urls import reverse
 from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from urllib.parse import urlparse
+from django.conf import settings
+from django.forms.models import model_to_dict
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models.functions import Coalesce
+from django.db import models
+from django.core.cache import cache
 
+
+client = Client(settings.CENTRIFUGO_API_URL, api_key=settings.CENTRIFUGO_API_KEY, timeout=1)
+
+def get_centrifugo_data(user_id, channel):
+    return {
+        "centrifugo": {
+            "token": jwt.encode(
+                {"sub": str(user_id), "exp":int(time.time()) + 10 * 60},
+                settings.CENTRIFUGO_TOKEN_HMAC_SECRET_KEY,
+                algorithm="HS256",
+            ),
+            "ws_url": settings.CENTRIFUGO_WS_URL,
+            "channel": channel
+        }
+    }
+
+def get_popular_tags():
+    cache_key = 'popular_tags'
+    popular_tags = cache.get(cache_key)    
+    print(popular_tags)
+    return popular_tags
+
+def get_best_users():
+    cache_key = 'best_users'
+    best_users = cache.get(cache_key)
+    print(best_users)
+    return best_users
+
+def set_cache_tags():
+    cache_key = 'popular_tags'
+    three_months_ago = timezone.now() - timedelta(days=90)
+    popular_tags = Tag.objects.annotate(
+        question_count=Count(
+            'question',
+            filter=models.Q(question__created_at__gte=three_months_ago)
+        )
+    ).filter(
+        question_count__gt=0
+    ).order_by(
+        '-question_count'
+    )[:5]
+    
+    cache.set(cache_key, popular_tags, timeout=10) 
+
+
+def set_cache_users():
+    cache_key = 'best_users'
+    best_users = User.objects.annotate(
+        total_likes=Count('questions__likes')
+    ).filter(
+        questions__isnull=False
+    ).values('id', 'username', 'total_likes'
+    ).order_by('-total_likes'
+    ).distinct()[:5]
+
+    cache.set(cache_key, best_users, timeout=10)  
+    
 
 def paginate(objects_list, request, per_page=5):
     page_number = request.GET.get('page', 1)
@@ -28,22 +95,40 @@ def paginate(objects_list, request, per_page=5):
 def home(request):
     questions = Question.objects.filter_by_creation_time()
     page_obj = paginate(questions, request)
-    return render(request, 'questionsListing.html', {'questions': page_obj})
+    popular_tags = get_popular_tags()
+    best_users = get_best_users()
+    print(popular_tags, best_users)
+    return render(request, 'questionsListing.html', {
+        'questions': page_obj,
+        'popular_tags': popular_tags,
+        'best_members': best_users
+        })
 
 
 
 def hot(request):
     questions = Question.objects.filter_by_likes()
     page_obj = paginate(questions, request)
-    return render(request, 'questionsListing.html', {'questions': page_obj})
+    
+    popular_tags = get_popular_tags()
+    best_users = get_best_users()
+    return render(request, 'questionsListing.html', {
+        'questions': page_obj,
+        'popular_tags': popular_tags,
+        'best_members': best_users})
 
 
 def tag(request, tag_name):
     questions = Question.objects.filter_by_tag(tag_name=tag_name).order_by('-created_at')  
     page_obj = paginate(questions, request)
+
+    popular_tags = get_popular_tags()
+    best_users = get_best_users()
     return render(request, 'tagQuestionsListing.html', {
         'questions': page_obj,
-        'tag_name': tag_name
+        'tag_name': tag_name,
+        'popular_tags': popular_tags,
+        'best_members': best_users
         })
  
 def question(request, question_id):
@@ -51,6 +136,9 @@ def question(request, question_id):
     answers = Answer.objects.for_question(question)
     
     page_answers = paginate(answers, request)
+
+    popular_tags = get_popular_tags()
+    best_users = get_best_users()
     
     form = AnswerForm()
     if request.method == 'POST':
@@ -60,7 +148,8 @@ def question(request, question_id):
             answer.author_id = request.user.id
             answer.question_id = question.id
             answer.save()
-
+            
+            client.publish(PublishRequest(channel=f'question.{question_id}', data=model_to_dict(answer)))
             answer_index = list(answers).index(answer) + 1
             page = (answer_index - 1) // page_answers.paginator.per_page + 1
 
@@ -69,11 +158,14 @@ def question(request, question_id):
     is_author = request.user == question.author
 
     return render(request, 'questionPage.html', {
+        'popular_tags': popular_tags,
+        'best_members': best_users,
         'form': form,
         "question": question,
         "page_answers": page_answers,
-        'is_author': is_author
-    })
+        'is_author': is_author,
+        **get_centrifugo_data(request.user.id, f'question.{question_id}')
+        })
 
 
 

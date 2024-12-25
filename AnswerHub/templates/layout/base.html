@@ -72,33 +72,28 @@
             emppty layout
             {% endblock %}</div>
 
+
         <div class="col-4">
           <section>
             <h2>Popular tags</h2>
-
             <div>
               <div>
-                <a href="#" class="badge text-bg-primary">Primary</a>
-                <a href="#" class="badge text-bg-secondary">Secondary</a>
-                <a href="#" class="badge text-bg-success">Success</a>
-                <a href="#" class="badge text-bg-danger">Danger</a>
-                <a href="#" class="badge text-bg-warning">Warning</a>
-                <a href="#" class="badge text-bg-info">Info</a>
-                <a href="#" class="badge text-bg-light">Light</a>
-                <a href="#" class="badge text-bg-dark">Dark</a>
+                {% for tag in popular_tags %}
+                  <a href="{% url 'tag_questions' tag_name=tag.tag_name %}" class="badge text-bg-primary">{{ tag.tag_name }}</a>
+                {% endfor %}
               </div>
             </div>
           </section>
-
+        
           <section>
             <h2>Best members</h2>
             <div>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
+                {% for member in best_members %}
+                  <li class="list-group-item">
+                    <a href="#">{{ member.username }}</a> ({{ member.total_likes }} likes)
+                  </li>
+                {% endfor %}
               </ul>
             </div>
           </section>

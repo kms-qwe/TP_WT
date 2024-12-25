@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(epc)%um)+f7@-yhrw=ytvx$+gj(uy#oh7_a&yxczvtzjt46yq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
@@ -124,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'static'
 
@@ -140,3 +140,17 @@ LOGIN_URL = '/login/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+CENTRIFUGO_TOKEN_HMAC_SECRET_KEY="7f3fd3cc-48f5-4d95-bf07-e58ff38a734a"
+CENTRIFUGO_WS_URL="ws://localhost:8010/connection/websocket"
+CENTRIFUGO_API_URL="http://localhost:8010/api"
+CENTRIFUGO_API_KEY="dd825c1b-c702-4b35-beb2-ebb95bc48b79"
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 60,
+    }
+}
