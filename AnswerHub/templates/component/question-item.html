@@ -12,20 +12,24 @@
                     src="{% static '/img/cat.png' %}" 
                 {% endif %}
         
-                class="img-fluid rounded-start mb-3 img-thumbnail flex-grow-1 p-0"
-                alt="Avatar"
+                class="img-fluid rounded-start"
+                style="width: 300px; height: 300px; object-fit: cover; border: 1px solid transparent; padding: 4px;"
+                alt="Profile Avatar"
             />
 
-            <div class="d-flex justify-content-center align-items-center gap-1">
+            <div class="question-like-section d-flex justify-content-center align-items-center gap-1">
                 <div 
                     class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
                     style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;"
                 >
                     <span id="likeCount">{{ question.likeCount }}</span>
                 </div>
-
-                <button id="upButton" class="btn btn-success btn-sm">+</button>
-                <button id="downButton" class="btn btn-danger btn-sm">-</button>
+            
+                <button 
+                    id="upButton" 
+                    class="btn btn-success btn-sm" 
+                    data-id="{{ question.id }}"
+                >&#128077;</button>
             </div>
 
         </div>

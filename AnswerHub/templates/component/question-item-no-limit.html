@@ -1,0 +1,64 @@
+{% load static %}
+<div class="container" style="max-width: 500;">
+<div class="d-flex w-100 flex-column gap-3">
+    <div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4 d-flex flex-column">
+            <img
+
+                {% if question.author.profile.avatar %}
+                    src="{{ question.author.profile.avatar.url }}"
+                {% else %}
+                    src="{% static '/img/cat.png' %}" 
+                {% endif %}
+        
+                class="img-fluid rounded-start"
+                style="width: 300px; height: 300px; object-fit: cover; border: 1px solid transparent; padding: 4px;"
+                alt="Profile Avatar"
+            />
+
+            <div class="question-like-section d-flex justify-content-center align-items-center gap-1">
+                <div 
+                    class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
+                    style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;"
+                >
+                    <span id="likeCount">{{ question.likeCount }}</span>
+                </div>
+            
+                <button 
+                    id="upButton" 
+                    class="btn btn-success btn-sm" 
+                    data-id="{{ question.id }}"
+                >&#128077;</button>
+            </div>
+            
+
+        </div>
+
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'question' question_id=question.id %}">{{ question.title }}</a></h5>
+            
+            <p class="card-text">
+                {{ question.text }}
+            </p>
+            
+
+            <small class="text-muted">{{ question.created_at }}</small>
+
+            <div class="d-flex gap-5">
+            <a href="{% url 'question' question_id=question.id %}" class="card-link">Answers</a>
+
+            <div>
+                Tags:
+                {% for tag in question.tags.all %}
+                    <a href="{% url 'tag_questions' tag.tag_name %}" class="card-link">{{ tag.tag_name }}</a>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>

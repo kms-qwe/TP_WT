@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %} 
 {% load static %}
+{% load bootstrap5 %}
 
 {% block add-style %}
 <style>
@@ -11,14 +12,13 @@
 {% endblock %} 
 
 
-{% block my-page-no-pic%} {% endblock %} 
 {% block title-of-body%} {% endblock %}
 
-
+ 
 
 {% block content %}
 <div class="d-flex flex-column">
-  {% include 'component/question-item.html' with question=question%}
+  {% include 'component/question-item-no-limit.html' with question=question%}
 
   <hr class="custom-hr" />
   {% for answer in page_answers %} 
@@ -28,15 +28,93 @@
   {% include 'component/pagination-item.html' with page_obj=page_answers %}
 
   <hr class="custom-hr" />
+  
+  {% if user.is_authenticated %}
+  <form action="{% url 'question' question_id=question.id %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
 
- {% with  placeholder="Your answer here" %}
-    {% include 'component/text-area-item.html' with input_placeholder=placeholder %}
- {% endwith %}
-
-{% with name="Answer" link="home" %}
-    {% include 'component/button-item.html' with unput_name=name input_link=link %}
-{% endwith %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Answer</button>
+    {% endbuttons %}
+ </form>
+  {% else %}
+   <p>Для того чтобы ответить, вам нужно <a href="{% url 'login' %}?next={{ request.get_full_path }}">войти</a>.</p>
+  {% endif %}
 
 </div>
+
+<script src="https://unpkg.com/centrifuge@5.0.1/dist/centrifuge.js"></script>
+<script type="text/javascript">
+  const container = document.getElementById('counter');
+
+  const centrifuge = new Centrifuge("{{centrifugo.ws_url}}", {
+    token: "{{centrifugo.token}}"
+  });
+
+  centrifuge.on('connecting', function (ctx) {
+    console.log(`connecting: ${ctx.code}, ${ctx.reason}`);
+  }).on('connected', function (ctx) {
+    console.log(`connected over ${ctx.transport}`);
+  }).on('disconnected', function (ctx) {
+    console.log(`disconnected: ${ctx.code}, ${ctx.reason}`);
+  }).connect();
+
+  const sub = centrifuge.newSubscription("{{centrifugo.channel}}");
+
+  const answersContainer = document.querySelector('.d-flex.flex-column');
+  const firstHr = answersContainer.querySelector('hr');
+
+  sub.on('publication', function (ctx) {
+    const answer = ctx.data;
+    
+    const answerHTML = `
+      <div id="answer-${answer.id}" class="container" style="max-width: 500">
+        <div class="d-flex w-100 flex-column gap-3">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4 d-flex flex-column">
+                <img src="/static/img/cat.png" class="img-fluid rounded-start"/>
+                <div class="answer-like-section d-flex justify-content-center align-items-center gap-1">
+                  <div class="border rounded px-2 py-1 d-flex justify-content-center align-items-center"
+                      style="min-width: 1.5rem; height: 1.8rem; font-size: 0.875rem;">
+                    <span id="likeCount">0</span>
+                  </div>
+                  <button id="upButton" class="btn btn-success btn-sm" data-id="${answer.id}">&#128077;</button>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <p class="card-text">${answer.text}</p>
+                  <small class="text-muted">${new Date().toLocaleString()}</small>
+                  <div class="question-check-section container mt-3 gap-1">
+                    <button class="btn btn-checkbox">
+                      <input class="form-check-input" type="checkbox" id="checkButton" 
+                            data-id="${answer.id}" ${answer.is_correct ? 'checked' : ''} />
+                      <label class="form-check-label" for="checkButton">Correct!</label>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    const temp = document.createElement('div');
+    temp.innerHTML = answerHTML;
+    const newAnswer = temp.firstElementChild;
+    
+    firstHr?.after(newAnswer);
+  }).on('subscribing', function (ctx) {
+    console.log(`subscribing: ${ctx.code}, ${ctx.reason}`);
+  }).on('subscribed', function (ctx) {
+    console.log('subscribed', ctx);
+  }).on('unsubscribed', function (ctx) {
+    console.log(`unsubscribed: ${ctx.code}, ${ctx.reason}`);
+  }).subscribe();
+</script>
+
 {% endblock %}
 

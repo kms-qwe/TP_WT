@@ -1,30 +1,26 @@
 {% extends 'layout/base.html' %}
 {% load static %}
+{% load bootstrap5 %}
 
-{% block my-page-pic %}{% endblock %}
 
 {% block title-of-body%} 
 <h1>Log In</h1>
-<p style="color: red">Invalind login or password</p>
 {% endblock %}
       
 
 {% block content %}
 
 <div class="d-flex flex-column">
+    <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
 
-{% with type="text" name="Login" placeholder="your login" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
 
-{% with type="password" name="Password" placeholder="your password" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-
-{% with name="Log In" link="home" %}
-    {% include 'component/button-item.html' with unput_name=name input_link=link %}
-{% endwith %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Log In</button>
+        {% endbuttons %}
+    </form>
 </div>
 
 

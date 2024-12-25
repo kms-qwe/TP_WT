@@ -1,7 +1,6 @@
 {% extends 'layout/base.html' %}
 {% load static %}
-
-{% block my-page-no-pic %}{% endblock %}
+{% load bootstrap5 %}
 
 {% block title-of-body%} 
 <h1>New Question</h1>
@@ -12,22 +11,14 @@
 
 <div class="d-flex flex-column">
 
-{% with type="text" name="Title" placeholder="your title" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
+  <form id="question-form" action="{% url 'new_question' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
 
-{% with  name="Text" placeholder="Your answer here" %}
-{% include 'component/text-area-item.html' with input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-{% with type="text" name="Tags" placeholder="your tags" %}
-    {% include 'component/input-item.html' with input_type=type input_name=name input_placeholder=placeholder %}
-{% endwith %}
-
-Copy{% with name="Ask" link="home" %}
-    {% include 'component/button-item.html' with input_name=name input_link=link %}
-{% endwith %}
-
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Ask</button>
+    {% endbuttons %}  
+  </form>
 </div>
 {% endblock %} 
 
@@ -43,132 +34,3 @@ Copy{% with name="Ask" link="home" %}
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AnswerHub</title>
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="d-flex container-fluid justify-content-between gap-5">
-          <a class="navbar-brand" href="#">AnswerHub</a>
-
-          <form class="d-flex flex-grow-1" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
-
-          <div class="d-flex gap-1">
-            <img src="#" alt="profile pucture" class="img-thumbnail" />
-            <div>
-              <div>Account Nick</div>
-              <div>
-                <a href="#">settings</a>
-                <a href="#">log out</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- <div class="d-flex gap-3">
-            <a href="#">log in</a>
-            <a href="#">register</a>
-          </div> -->
-        </div>
-      </div>
-    </nav>
-
-    <main class="container">
-      <div class="d-flex gap-3 align-items-center bg-light">
-        <h1>New Question</h1>
-      </div>
-
-      <div class="row">
-        <div class="col-8">
-          <div class="d-flex flex-column">
-            <div class="mb-3 text-">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Title</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="Some title"
-              />
-            </div>
-            <div class="mb-3 text-left">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Text</label
-              >
-              <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
-              ></textarea>
-            </div>
-
-            <div class="mb-3 text-left">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Tags</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="Some tags"
-              />
-            </div>
-
-            <div class="text-left">
-              <button type="button" class="btn btn-primary btn-sm">Ask</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-4">
-          <section>
-            <h2>Popular tags</h2>
-
-            <div>
-              <div>
-                <a href="#" class="badge text-bg-primary">Primary</a>
-                <a href="#" class="badge text-bg-secondary">Secondary</a>
-                <a href="#" class="badge text-bg-success">Success</a>
-                <a href="#" class="badge text-bg-danger">Danger</a>
-                <a href="#" class="badge text-bg-warning">Warning</a>
-                <a href="#" class="badge text-bg-info">Info</a>
-                <a href="#" class="badge text-bg-light">Light</a>
-                <a href="#" class="badge text-bg-dark">Dark</a>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2>Best members</h2>
-            <div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-                <li class="list-group-item"><a href="#">Member1</a></li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-    <script src="../static/js/bootstrap.min.js"></script>
-  </body>
-</html>
