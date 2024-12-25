@@ -238,7 +238,7 @@
 - Шаблоны:
   - [templates/layout/base.html#L121](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/templates/layout/base.html#L121)
 - Скрипт заполнения кэша:
-  - [app/managment/commands/fill_cache.py](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/managment/commands/fill_cache.py)
+  - [app/managment/commands/fill_cache.py](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/management/commands/fill_cache.py)
 - Запуск CRON:
   - \* \* \* \* \* cd /path/to/project && /bin/bash -c "source venv/bin/activate && /path/to/project/venv/bin/python manage.py fill_cache" >> /path/to/project/cron_log.txt 2>&1
 
