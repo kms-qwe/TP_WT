@@ -150,7 +150,11 @@ CENTRIFUGO_API_KEY="dd825c1b-c702-4b35-beb2-ebb95bc48b79"
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 60,
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/home/misha/Desktop/vk_education/TP_WT/AnswerHub/cache',  
+        'TIMEOUT': 300,  
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,  
+        },
     }
 }

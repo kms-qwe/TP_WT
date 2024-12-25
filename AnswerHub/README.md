@@ -210,5 +210,54 @@
 | 99%       | 19         |
 | 100%      | 103        |
 
+Вот исправленный текст с правильными ссылками:
+
 ---
+
+# Домашнее задание №7
+
+## Real-time сообщения
+
+### Настройка Centrifugo
+- Конфигурация Centrifugo: [centrifugo/centrifugo_config.json](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/centrifugo/centrifugo_config.json)
+- Обработка на бэкенде:
+  - `get_centrifugo_data`: [app/views.py#L28](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L28)
+  - `client`: [app/views.py#L26](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L26)
+  - `question`: [app/views.py#L134](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L134)
+- Обработка на фронтенде:
+  - [templates/questionPage.html#L47](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/templates/questionPage.html#L47)
+
+---
+
+## Кэширование
+- Методы кэширования в бэкенде:
+  - `get_popular_tags`: [app/views.py#L41](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L41)
+  - `set_cache_tags`: [app/views.py#L46](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L46)
+  - `get_best_users`: [app/views.py#L65](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L65)
+  - `set_cache_users`: [app/views.py#L70](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/views.py#L70)
+- Шаблоны:
+  - [templates/layout/base.html#L121](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/templates/layout/base.html#L121)
+- Скрипт заполнения кэша:
+  - [app/managment/fill_cache.py](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/managment/fill_cache.py)
+- Запуск CRON:
+  - \* \* \* \* \* cd /path/to/project && /bin/bash -c "source venv/bin/activate && /path/to/project/venv/bin/python manage.py fill_cache" >> /path/to/project/cron_log.txt 2>&1
+
+---
+
+## Полнотекстовый поиск
+- Определение модели:
+  - [app/models.py#L70](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/models.py#L70)
+- URL маршруты:
+  - [app/urls.py#L25](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/urls.py#L25)
+- Миграция:
+  - [app/migrations/0004_remove_question_question_search_vector_gin.py](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/app/migrations/0004_remove_question_question_search_vector_gin.py)
+- Шаблоны:
+  - [templates/layout/base.html#L20](https://github.com/kms-qwe/TP_WT/blob/main/AnswerHub/templates/layout/base.html#L20)
+
+--- 
+
+
+
+
+
 

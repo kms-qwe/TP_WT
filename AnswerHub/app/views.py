@@ -20,6 +20,7 @@ from datetime import timedelta
 from django.db.models.functions import Coalesce
 from django.db import models
 from django.core.cache import cache
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 
 
 client = Client(settings.CENTRIFUGO_API_URL, api_key=settings.CENTRIFUGO_API_KEY, timeout=1)
@@ -39,19 +40,13 @@ def get_centrifugo_data(user_id, channel):
 
 def get_popular_tags():
     cache_key = 'popular_tags'
-    popular_tags = cache.get(cache_key)    
-    print(popular_tags)
+    popular_tags = cache.get(cache_key)
     return popular_tags
-
-def get_best_users():
-    cache_key = 'best_users'
-    best_users = cache.get(cache_key)
-    print(best_users)
-    return best_users
 
 def set_cache_tags():
     cache_key = 'popular_tags'
     three_months_ago = timezone.now() - timedelta(days=90)
+
     popular_tags = Tag.objects.annotate(
         question_count=Count(
             'question',
@@ -62,9 +57,15 @@ def set_cache_tags():
     ).order_by(
         '-question_count'
     )[:5]
-    
-    cache.set(cache_key, popular_tags, timeout=10) 
 
+    cache.set(cache_key, popular_tags, timeout=10)
+
+
+
+def get_best_users():
+    cache_key = 'best_users'
+    best_users = cache.get(cache_key)
+    return best_users
 
 def set_cache_users():
     cache_key = 'best_users'
@@ -97,7 +98,6 @@ def home(request):
     page_obj = paginate(questions, request)
     popular_tags = get_popular_tags()
     best_users = get_best_users()
-    print(popular_tags, best_users)
     return render(request, 'questionsListing.html', {
         'questions': page_obj,
         'popular_tags': popular_tags,
@@ -280,3 +280,20 @@ def update_answer(request):
                 return JsonResponse({'success': False, 'error': 'Not the author'})
         except Answer.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Answer not found'})
+
+
+def search_questions(request):
+    query = request.GET.get('q', '')
+    if query:
+        vector = SearchVector('title', weight='A') + SearchVector('text', weight='B')
+        search_query = SearchQuery(query)
+        
+        questions = (
+            Question.objects.annotate(rank=SearchRank(vector, search_query))
+            .filter(rank__gte=0.1) 
+            .order_by('-rank')[:10]
+        )
+        results = [{'title': q.title, 'id': q.id} for q in questions]
+    else:
+        results = []
+    return JsonResponse(results, safe=False)

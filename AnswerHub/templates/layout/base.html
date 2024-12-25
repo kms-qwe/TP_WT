@@ -16,17 +16,62 @@
           
           <a class="navbar-brand" href="{% url 'home' %}">AnswerHub</a>
           <a class="navbar-brand" href="{% url 'new_question' %}">Ask</a>
-          <form class="d-flex flex-grow-1" role="search">
+
+          <form class="d-flex flex-grow-1" role="search" style="position: relative;">
             <input
               class="form-control me-2"
+              id="search-input"
               type="search"
               placeholder="Search"
               aria-label="Search"
+              autocomplete="off"
             />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            <ul id="search-results" class="dropdown-menu" style="display: none; position: absolute; width: 100%; z-index: 1000;"></ul>
           </form>
+
+          <script>
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+
+            searchInput.addEventListener('input', () => {
+              const query = searchInput.value;
+              if (query.length > 2) { 
+                fetch(`/search/?q=${encodeURIComponent(query)}`)
+                  .then(response => response.json())
+                  .then(results => {
+                    searchResults.innerHTML = '';
+                    if (results.length) {
+                      searchResults.style.display = 'block';
+                      results.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'dropdown-item';
+
+                        const link = document.createElement('a');
+                        link.href = `/question/${item.id}`; 
+                        link.textContent = item.title;
+                        link.style.textDecoration = 'none'; 
+                        link.style.color = 'inherit'; 
+
+                        li.appendChild(link);
+                        searchResults.appendChild(li);
+                      });
+                    } else {
+                      searchResults.style.display = 'none';
+                    }
+                  });
+              } else {
+                searchResults.style.display = 'none';
+              }
+            });
+
+            document.addEventListener('click', (event) => {
+              if (!searchInput.contains(event.target)) {
+                searchResults.style.display = 'none';
+              }
+            });
+          </script>
+
 
           {% if request.user.is_authenticated %}
             <div class="d-flex gap-1">

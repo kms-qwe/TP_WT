@@ -4,6 +4,10 @@ from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.postgres.search import SearchVectorField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.contrib.postgres.search import SearchVector
 
 
 
@@ -54,7 +58,6 @@ class AnswerManager(models.Manager):
     queryset = self.filter(question=question, created_at__gte=one_week_ago)
     queryset = queryset.annotate(likeCount=Count('likes'))
     return queryset.order_by('-is_correct', '-likeCount')
-    
 
 
 class Question(models.Model):
@@ -64,6 +67,8 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) # auto_now_add=True убран, чтобы протестить сортировку
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', through='TagQuestion')
+    search_vector = SearchVectorField(null=True)  
+
     objects = QuestionManager() 
     def __str__(self):
         return self.title
@@ -71,7 +76,11 @@ class Question(models.Model):
     def get_likes_count(self):
         return self.likes.count()
 
-
+    
+@receiver(pre_save, sender=Question)
+def update_search_vector(sender, instance, **kwargs):
+    instance.search_vector = SearchVector('title', 'text')
+    
 class Answer(models.Model):
     text = models.TextField()
     is_correct = models.BooleanField(default=False)

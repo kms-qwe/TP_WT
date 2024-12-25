@@ -21,7 +21,10 @@ urlpatterns = [
 
 
    # Settings
-   path('profile/edit', views.profile_edit, name='profile.edit')
+    path('profile/edit', views.profile_edit, name='profile.edit'),
+    path('search/', views.search_questions, name='search_questions')
+
+
 
 ]
 
